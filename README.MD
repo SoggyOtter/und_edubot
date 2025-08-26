@@ -1,5 +1,6 @@
 # UND_EDUBot Overview
 
+[Build Instructions Playlist](https://www.youtube.com/playlist?list=PLYcNE-BB9RCs-w1YGQMMMpfctwIbQ31T8)
 
 # Build the robot
 
