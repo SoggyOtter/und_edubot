@@ -38,3 +38,8 @@ Click on operating system, scroll down and select use custom.  Then find the .im
 
 Click choose storage and select the micro SD card.  You will be prompted to set the host name and password, choose a name and password you will remember.
 
+# UND Students Pi Image Files
+
+Duplicate the SD card from https://ndusbpos-my.sharepoint.com/:u:/g/personal/john_merila_ndus_edu/EXtqe4LofwhBoTBZhCYkA34BFa9aUKt46IkEdTdlvLatog?e=Mr8oee and follow the steps to flash a SD card
+
+I am looking at alternative hosting or compression methods to allow for an image that can be hosted on github.
