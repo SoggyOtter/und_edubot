@@ -45,7 +45,7 @@ Duplicate the SD card from https://ndusbpos-my.sharepoint.com/:u:/g/personal/joh
 I am looking at alternative hosting or compression methods to allow for an image that can be hosted on github.
 
 # Getting the robot running
-
+{::comment}
 The EDUBot uses ROS2 in a Docker container to manage the control of the robot.
 
 Once the pi powers on open VS code, the easiest way is to open a terminal and run
@@ -62,7 +62,7 @@ With the PiBot folder open use the hotkey ctrl+shift+p and type open in containe
 
 BASIC STARTUP
 Basic Startup:
-
+{:/comment}
 1. open terminal and open VS code
 
 code .
