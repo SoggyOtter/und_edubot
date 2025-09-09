@@ -53,6 +53,7 @@ Once the pi powers on open VS code, the easiest way is to open a terminal and ru
 ```bash
 code .
 '''bash
+
 Once in vs code open the PiBot directory using file -> open folder -> PiBot
 
 With the PiBot folder open use the hotkey ctrl+shift+p and type open in container.  This opens the docker container and allows you to control the robot.
