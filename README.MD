@@ -50,6 +50,8 @@ The EDUBot uses ROS2 in a Docker container to manage the control of the robot.
 
 Once the pi powers on open VS code, the easiest way is to open a terminal and run
 
+
+
 ```bash
 code .
 ```
@@ -57,3 +59,21 @@ code .
 Once in vs code open the PiBot directory using file -> open folder -> PiBot
 
 With the PiBot folder open use the hotkey ctrl+shift+p and type open in container.  This opens the docker container and allows you to control the robot.
+
+BASIC STARTUP
+Basic Startup:
+
+1. open terminal and open VS code
+
+code .
+
+2.
+file -> open folder
+select pibot_repo
+click on pop up Reopen in container
+if no pop up ctrl-shift-p reopen in container
+if it fails ctrl-shift-p rebuild and reopen container
+
+3.
+
+Follow readme located in ws/src/PiBot/Readme.txt
