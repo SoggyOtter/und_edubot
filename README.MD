@@ -46,7 +46,13 @@ I am looking at alternative hosting or compression methods to allow for an image
 
 # Getting the robot running
 
-Once the pi powers on open VS code, the easiest way is to open a terminal and type
+The EDUBot uses ROS2 in a Docker container to manage the control of the robot.
+
+Once the pi powers on open VS code, the easiest way is to open a terminal and run
 
 ```bash
 code .
+
+Once in vs code open the PiBot directory using file -> open folder -> PiBot
+
+With the PiBot folder open use the hotkey ctrl+shift+p and type open in container.  This opens the docker container and allows you to control the robot.
