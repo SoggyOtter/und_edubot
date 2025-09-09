@@ -63,15 +63,24 @@ With the PiBot folder open use the hotkey ctrl+shift+p and type open in containe
 BASIC STARTUP
 Basic Startup:
  -->
-1. open terminal and open VS code
+1. 
 
+open terminal and open VS code
+
+```bash
 code .
+```
 
 2.
+
 file -> open folder
+
 select pibot_repo
+
 click on pop up Reopen in container
+
 if no pop up ctrl-shift-p reopen in container
+
 if it fails ctrl-shift-p rebuild and reopen container
 
 3.
