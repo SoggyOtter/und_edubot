@@ -52,7 +52,7 @@ Once the pi powers on open VS code, the easiest way is to open a terminal and ru
 
 ```bash
 code .
-'''bash
+```bash
 
 Once in vs code open the PiBot directory using file -> open folder -> PiBot
 
