@@ -43,3 +43,10 @@ Click choose storage and select the micro SD card.  You will be prompted to set 
 Duplicate the SD card from https://ndusbpos-my.sharepoint.com/:u:/g/personal/john_merila_ndus_edu/EXtqe4LofwhBoTBZhCYkA34BFa9aUKt46IkEdTdlvLatog?e=Mr8oee and follow the steps to flash a SD card
 
 I am looking at alternative hosting or compression methods to allow for an image that can be hosted on github.
+
+# Getting the robot running
+
+Once the pi powers on open VS code, the easiest way is to open a terminal and type
+
+```bash
+code .
