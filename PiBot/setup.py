@@ -25,7 +25,8 @@ setup(
         'console_scripts': [
             'PiBot = PiBot.PiBot:main',
             'motor_control = PiBot.motor_control:main',
-            'encoder_data = PiBot.encoder_publisher:main'
+            'encoder_data = PiBot.encoder_publisher:main',
+            'velocity_control = PiBot.velocity_control_node:main'
         ],
         
     },

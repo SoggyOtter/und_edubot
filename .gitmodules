@@ -1,3 +1,6 @@
 [submodule "sllidar_ros2"]
 	path = sllidar_ros2
 	url = https://github.com/Slamtec/sllidar_ros2
+[submodule "realsense-ros"]
+	path = realsense-ros
+	url = https://github.com/IntelRealSense/realsense-ros.git
