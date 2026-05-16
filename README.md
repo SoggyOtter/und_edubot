@@ -4,15 +4,17 @@
 
 # Build the robot
 
-The parts list for the is in the parts list excel file.  Purchase the needed components to build the robot.
+Use the parts list spreadsheet to purchase the components needed to build the robot.
 
-If you are building the robot with others several people can build one robot with multi packs of screws and wire.
+If you are building multiple robots with a group, multi-packs of screws and wire can be shared across builds.
 
-The CAD models for printing are found in the /build/CAD Models directory.  The .3mf files can be imported directly to the slicer of your choosing for printing.  It is reccommended to use support material, however, acceptable results can be achieved without supports.
+<!-- Add a link to hosted CAD resources here if they become available online. -->
 
-Soldering and assembly of the electrical components should be done following the wiring diagram found in the wiring diagram power point in the /build directory
+Use the wiring diagram when soldering and assembling the electrical components.
 
-## Tools Needed:
+![Wiring diagram](docs/images/wiring_diagram_V1.png)
+
+## Tools Needed
 
 - 3D printer
 - Soldering iron & solder
@@ -22,71 +24,39 @@ Soldering and assembly of the electrical components should be done following the
 
 # Build Instructions
 
-Build instructions will be provided by youtube videos which will be posted.  Following the video instructions and diagrams provide all the information needed to build the robot.
-
-# Powering up for the first time
-
-Once the robot is built you can power up the pi with a flashed micro SD card.
-
-In the /software/Pi Image directory the image for the raspberry pi is provided.  Download the .img file and use the Raspberry Pi Imager to flash the micro SD card with the image.
-
-TODO add images
-
-Select Pi 5 for the pi version
-
-Click on operating system, scroll down and select use custom.  Then find the .img file you downloaded.
-
-Click choose storage and select the micro SD card.  You will be prompted to set the host name and password, choose a name and password you will remember.
-
-# UND Students Pi Image Files
-
-Duplicate the SD card from https://ndusbpos-my.sharepoint.com/:u:/g/personal/john_merila_ndus_edu/EXtqe4LofwhBoTBZhCYkA34BFa9aUKt46IkEdTdlvLatog?e=Mr8oee and follow the steps to flash a SD card
-
-I am looking at alternative hosting or compression methods to allow for an image that can be hosted on github.
+Build instructions are provided in the YouTube playlist above. Follow the videos and diagrams to assemble the robot.
 
 # Getting the robot running
 
+Install Pixi using the [official Pixi installation guide](https://pixi.prefix.dev/latest/installation).
+
+Enter the ROS 2 environment
+```bash
+pixi shell
+```
+
+Build the workspace
+```bash
+colcon build --symlink-install
+source install/setup.zsh
+```
+
+Build one package
+```bash
+colcon build --symlink-install --packages-select PiBot
+source install/setup.zsh
+```
+
+Run a node manually
+```bash
+ros2 run PiBot motor_control
+```
+
+Run the PiBot launch file
+```bash
+ros2 launch PiBot PiBot_launch.py
+```
+
 ## macOS development note
 
-The `sllidar_ros2` package is currently skipped on macOS. It is a hardware driver package for the Slamtec/RPLIDAR sensor, and this workspace does not currently support building or running that driver reliably on macOS. When `activate.sh` is sourced on macOS, it writes `sllidar_ros2/COLCON_IGNORE` so `colcon` will ignore the package. On non-macOS systems, the activation script removes only the `COLCON_IGNORE` file that it generated, allowing the package to build normally.
-
-<!--- The EDUBot uses ROS2 in a Docker container to manage the control of the robot.
-
-Once the pi powers on open VS code, the easiest way is to open a terminal and run
-
-
-
-```bash
-code .
-```
-
-Once in vs code open the PiBot directory using file -> open folder -> PiBot
-
-With the PiBot folder open use the hotkey ctrl+shift+p and type open in container.  This opens the docker container and allows you to control the robot.
-
-BASIC STARTUP
-Basic Startup:
- -->
-1. 
-
-open terminal and open VS code
-
-```bash
-code .
-```
-
-2.
-
-file -> open folder
-
-select pibot_repo
-
-click on pop up Reopen in container
-
-if no pop up ctrl-shift-p reopen in container
-
-if it fails ctrl-shift-p rebuild and reopen container
-
-3.
-
-Follow readme located in ws/src/PiBot/Readme.txt
+The `sllidar_ros2` package is skipped on macOS. It is the hardware driver for the Slamtec/RPLIDAR sensor, and this workspace does not currently build or run that driver reliably on macOS. When `activate.sh` is sourced on macOS, it writes `sllidar_ros2/COLCON_IGNORE` so `colcon` ignores the package. On non-macOS systems, the activation script removes only the `COLCON_IGNORE` file that it generated, allowing the package to build normally.
