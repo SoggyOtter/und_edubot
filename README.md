@@ -60,3 +60,8 @@ ros2 launch PiBot PiBot_launch.py
 ## macOS development note
 
 The `sllidar_ros2` package is skipped on macOS. It is the hardware driver for the Slamtec/RPLIDAR sensor, and this workspace does not currently build or run that driver reliably on macOS. When `activate.sh` is sourced on macOS, it writes `sllidar_ros2/COLCON_IGNORE` so `colcon` ignores the package. On non-macOS systems, the activation script removes only the `COLCON_IGNORE` file that it generated, allowing the package to build normally.
+
+To hide local status noise from the `sllidar_ros2` submodule
+```bash
+git config submodule.src/sllidar_ros2.ignore dirty
+```
