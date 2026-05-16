@@ -1,0 +1,41 @@
+[workspace]
+authors = ["SoggyOtter <alexandere42@outlook.com>"]
+channels = ["robostack-humble", "conda-forge"]
+name = "und_edubot"
+platforms = ["linux-64", "linux-aarch64", "osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+build = "colcon build --symlink-install"
+pixi_hello = {cmd = "ros2 run pixi_ros hello_pixi", depends-on = ["build"]}
+format = { cmd = "ruff format src", default-environment = "test" }
+typecheck = { cmd = "pyrefly check", default-environment = "test" }
+zenohd = { cmd = "ros2 run rmw_zenoh_cpp rmw_zenohd", default-environment = "zenoh" }
+clean = "rm -rf build install log"
+
+
+[dependencies]
+ros-humble-foxglove-bridge = ">=0.8.5,<0.9"
+ros-humble-desktop = ">=0.10.0,<0.11"
+colcon-common-extensions = ">=0.3.0,<0.4"
+setuptools = "<=58.2.0"
+
+[feature.zenoh.dependencies]
+ros-humble-rmw-zenoh-cpp = ">=0.1.2,<0.2"
+
+[feature.zenoh.activation]
+env = {
+    RMW_IMPLEMENTATION="rmw_zenoh_cpp",
+    ZENOH_ROUTER_CONFIG_URI="$PIXI_PROJECT_ROOT/router.json5",
+}
+
+[feature.test.dependencies]
+pyrefly = "*"
+ruff = "*"
+
+[environments]
+zenoh = ["zenoh"]
+test = ["test"]
+
+[activation]
+scripts = ["./activate.sh"]

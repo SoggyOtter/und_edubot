@@ -46,6 +46,10 @@ I am looking at alternative hosting or compression methods to allow for an image
 
 # Getting the robot running
 
+## macOS development note
+
+The `sllidar_ros2` package is currently skipped on macOS. It is a hardware driver package for the Slamtec/RPLIDAR sensor, and this workspace does not currently support building or running that driver reliably on macOS. When `activate.sh` is sourced on macOS, it writes `sllidar_ros2/COLCON_IGNORE` so `colcon` will ignore the package. On non-macOS systems, the activation script removes only the `COLCON_IGNORE` file that it generated, allowing the package to build normally.
+
 <!--- The EDUBot uses ROS2 in a Docker container to manage the control of the robot.
 
 Once the pi powers on open VS code, the easiest way is to open a terminal and run
