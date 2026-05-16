@@ -63,5 +63,5 @@ The `sllidar_ros2` package is skipped on macOS. It is the hardware driver for th
 
 To hide local status noise from the `sllidar_ros2` submodule
 ```bash
-git config submodule.src/sllidar_ros2.ignore dirty
+git config submodule.sllidar_ros2.ignore dirty
 ```
