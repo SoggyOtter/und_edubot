@@ -7,7 +7,6 @@ version = "0.1.0"
 
 [tasks]
 build = "colcon build --symlink-install"
-pixi_hello = {cmd = "ros2 run pixi_ros hello_pixi", depends-on = ["build"]}
 format = { cmd = "ruff format src", default-environment = "test" }
 typecheck = { cmd = "pyrefly check", default-environment = "test" }
 zenohd = { cmd = "ros2 run rmw_zenoh_cpp rmw_zenohd", default-environment = "zenoh" }
