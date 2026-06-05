@@ -18,8 +18,6 @@ ros-humble-foxglove-bridge = ">=0.8.5,<0.9"
 ros-humble-desktop = ">=0.10.0,<0.11"
 colcon-common-extensions = ">=0.3.0,<0.4"
 setuptools = "<=58.2.0"
-
-[feature.zenoh.dependencies]
 ros-humble-rmw-zenoh-cpp = ">=0.1.2,<0.2"
 
 [feature.zenoh.activation]
