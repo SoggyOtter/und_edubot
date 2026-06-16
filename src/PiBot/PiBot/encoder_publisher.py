@@ -12,8 +12,6 @@ AS5600_ADDR = 0x36
 ANGLE_REG = 0x0E
 
 
-
-
 def read_angle_L():
     bus = smbus2.SMBus(1)
     # Read two bytes from the angle register
@@ -21,6 +19,7 @@ def read_angle_L():
     angle = (raw_data[0] << 8) | raw_data[1]  # Combine MSB and LSB
     angle = angle & 0x0FFF  # Mask to 12 bits
     return (angle / 4096.0) * 360.0  # Convert to degrees
+
 
 def read_angle_R():
     bus = smbus2.SMBus(4)
@@ -33,19 +32,17 @@ def read_angle_R():
 
 class JointStatePublisher(Node):
     def __init__(self):
-        super().__init__('minimal_publisher')
-        self.publisher_ = self.create_publisher(JointState, 'joint_states', 10)
+        super().__init__("minimal_publisher")
+        self.publisher_ = self.create_publisher(JointState, "joint_states", 10)
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.encoder_callback)
-        self.joint_names = ['left', 'right']
+        self.joint_names = ["left", "right"]
         self.ang_L_prev = read_angle_L()
         self.time_L_prev = time.time()
         self.ang_R_prev = read_angle_R()
         self.time_R_prev = time.time()
-        
-        
-        
-        self.get_logger().info('Joint State Publisher Node has been started.')
+
+        self.get_logger().info("Joint State Publisher Node has been started.")
 
     def encoder_callback(self):
         try:
@@ -54,19 +51,19 @@ class JointStatePublisher(Node):
             # Fill joint names
             msg.name = self.joint_names
             ang_L = read_angle_L()
-            
+
             vel_L = (ang_L - self.ang_L_prev) / (time.time() - self.time_L_prev)
             self.time_L_prev = time.time()
             self.ang_L_prev = ang_L
             ang_R = read_angle_R()
-            
+
             vel_R = (ang_R - self.ang_R_prev) / (time.time() - self.time_R_prev)
-            
+
             self.time_R_prev = time.time()
             self.ang_R_prev = ang_R
-            msg.position = [ang_L,ang_R]
-            msg.velocity = [vel_L,vel_R]
-            
+            msg.position = [ang_L, ang_R]
+            msg.velocity = [vel_L, vel_R]
+
             self.publisher_.publish(msg)
             # msg = String()
             # msg.data = 'Hello World: %d' % self.i
@@ -93,9 +90,8 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
 
 
 # try:

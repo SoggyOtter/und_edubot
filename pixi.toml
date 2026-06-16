@@ -19,16 +19,21 @@ ros-humble-desktop = ">=0.10.0,<0.11"
 colcon-common-extensions = ">=0.3.0,<0.4"
 setuptools = "<=58.2.0"
 ros-humble-rmw-zenoh-cpp = ">=0.1.2,<0.2"
+cxx-compiler = ">=1.11.0,<2"
+cmake = ">=4.2.3,<5"
+ninja = ">=1.13.2,<2"
+pkg-config = ">=0.29.2,<0.30"
+gpiozero = ">=2.0.1,<3"
 
 [feature.zenoh.activation]
 env = {
+
     RMW_IMPLEMENTATION="rmw_zenoh_cpp",
-    ZENOH_ROUTER_CONFIG_URI="$PIXI_PROJECT_ROOT/router.json5",
-}
+    ZENOH_ROUTER_CONFIG_URI="$PIXI_PROJECT_ROOT/router.json5"}
 
 [feature.test.dependencies]
-pyrefly = "*"
 ruff = "*"
+pyrefly = ">=1.0.0,<2"
 
 [environments]
 zenoh = ["zenoh"]
@@ -36,3 +41,9 @@ test = ["test"]
 
 [activation]
 scripts = ["./activate.sh"]
+
+[system-requirements]
+libc = "2.34"
+
+[target.linux-aarch64.dependencies]
+lgpio = ">=0.2.2.0,<0.3"
