@@ -11,6 +11,8 @@ format = { cmd = "ruff format src", default-environment = "test" }
 typecheck = { cmd = "pyrefly check", default-environment = "test" }
 zenohd = { cmd = "ros2 run rmw_zenoh_cpp rmw_zenohd", default-environment = "zenoh" }
 clean = "rm -rf build install log"
+pibot = "ros2 run PiBot motor_control"
+teleop = "ros2 run teleop_twist_keyboard teleop_twist_keyboard"
 
 
 [dependencies]
