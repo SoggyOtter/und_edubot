@@ -1,1 +1,1 @@
-from .csv import write_to_csv
+from .csv import write_to_csv, write_to_npz

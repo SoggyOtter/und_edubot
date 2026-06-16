@@ -73,10 +73,10 @@ def main(args=None):
 
 				print(node.m1vel)
 				print(node.m2vel)
-				if node.m1vel > 0:
-					motor1.forward(node.m1vel)
-				else:
-					motor1.backward(abs(node.m1vel))
+				# if node.m1vel > 0:
+				# 	motor1.forward(node.m1vel)
+				# else:
+				# 	motor1.backward(abs(node.m1vel))
 				if node.m2vel > 0:
 					motor2.forward(node.m2vel)
 				else:
