@@ -8,13 +8,6 @@ from launch.actions import IncludeLaunchDescription
 def generate_launch_description():
     return LaunchDescription(
         [
-            # IncludeLaunchDescription(
-            #     PathJoinSubstitution([
-            #         FindPackageShare('sllidar_ros2'),
-            #         'launch',
-            #         'sllidar_a1_launch.py'
-            #     ]),
-            #     launch_arguments={}.items()),
             Node(
                 package="PiBot",
                 executable="encoder_data",
@@ -23,8 +16,8 @@ def generate_launch_description():
             ),
             Node(
                 package="PiBot",
-                executable="motor_control",
-                name="motor_control",
+                executable="velocity_control",
+                name="velocity_control",
                 # output='screen'
             ),
         ]
