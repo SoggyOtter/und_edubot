@@ -233,6 +233,9 @@ __marimo__/
 
 *.csv
 # if anyone is using pycharm + remotes (do not reccommend as of like Nov. 2024)
+
 .idea/ # pixi environments
 .pixi/*
 !.pixi/config.toml
+
+output/

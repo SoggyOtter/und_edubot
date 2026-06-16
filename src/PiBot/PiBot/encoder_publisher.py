@@ -2,9 +2,11 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 import math
-
+import numpy as np
 import smbus2
 import time
+
+from collections import deque
 
 
 # Define I2C address and bus
@@ -13,7 +15,7 @@ ANGLE_REG = 0x0E
 
 
 def read_angle_L():
-    bus = smbus2.SMBus(1)
+    bus = smbus2.SMBus(4)
     # Read two bytes from the angle register
     raw_data = bus.read_i2c_block_data(AS5600_ADDR, ANGLE_REG, 2)
     angle = (raw_data[0] << 8) | raw_data[1]  # Combine MSB and LSB
@@ -22,7 +24,7 @@ def read_angle_L():
 
 
 def read_angle_R():
-    bus = smbus2.SMBus(4)
+    bus = smbus2.SMBus(1)
     # Read two bytes from the angle register
     raw_data = bus.read_i2c_block_data(AS5600_ADDR, ANGLE_REG, 2)
     angle = (raw_data[0] << 8) | raw_data[1]  # Combine MSB and LSB
@@ -35,45 +37,84 @@ class JointStatePublisher(Node):
         super().__init__("minimal_publisher")
         self.publisher_ = self.create_publisher(JointState, "joint_states", 10)
         timer_period = 0.05  # seconds
-        self.timer = self.create_timer(timer_period, self.encoder_callback)
-        self.joint_names = ["left", "right"]
-        self.ang_L_prev = read_angle_L()
-        self.time_L_prev = time.time()
+        self.timer = self.create_timer(timer_period, self.angular_velocity_cb)
+        self.joint_names = ['left', 'right']
+        self.ang_L_ring = deque(maxlen=3)
+        self.ang_R_ring = deque(maxlen=3)
+        
         self.ang_R_prev = read_angle_R()
         self.time_R_prev = time.time()
-
-        self.get_logger().info("Joint State Publisher Node has been started.")
-
-    def encoder_callback(self):
+        self.ang_L_prev = read_angle_L()
+        self.time_L_prev = time.time()
+        
+        
+        
+        self.prev_time = time.time()
+        
+        
+        self.get_logger().info('Joint State Publisher Node has been started.')
+        
+    def angular_velocity_cb(self):
         try:
             msg = JointState()
-
-            # Fill joint names
             msg.name = self.joint_names
             ang_L = read_angle_L()
-
-            vel_L = (ang_L - self.ang_L_prev) / (time.time() - self.time_L_prev)
-            self.time_L_prev = time.time()
-            self.ang_L_prev = ang_L
+            # Calculate difference in degrees
+            # do -1 to get robot frame
+            now = time.time()
+            angular_diff_deg_L = (ang_L - self.ang_L_prev + 180.0) % 360. -180
+            angular_vel_deg_L = angular_diff_deg_L / (now - self.time_L_prev)
+            
             ang_R = read_angle_R()
-
-            vel_R = (ang_R - self.ang_R_prev) / (time.time() - self.time_R_prev)
-
-            self.time_R_prev = time.time()
+            angular_diff_deg_R = -1* (ang_R - self.ang_R_prev + 180.0) % 360. -180
+            angular_vel_deg_R = angular_diff_deg_R / (now - self.time_R_prev)
+            
+            
+            self.ang_R_ring.append(angular_vel_deg_R)
+            self.ang_L_ring.append(angular_vel_deg_L)
+            
+            # Update values for calculating velocity and time
+            self.ang_L_prev = ang_L
             self.ang_R_prev = ang_R
+            # should just use same time, should specify high precision clock for better results
+            self.time_L_prev = now
+            self.time_R_prev = now
+            
             msg.position = [ang_L, ang_R]
-            msg.velocity = [vel_L, vel_R]
-
+            msg.velocity = [angular_vel_deg_L, angular_vel_deg_R]
             self.publisher_.publish(msg)
-            # msg = String()
-            # msg.data = 'Hello World: %d' % self.i
-            # self.publisher_.publish(msg)
-            # self.get_logger().info('Publishing: "%s"' % msg.data)
-            # self.i += 1
+        
         except OSError as e:
             self.get_logger().warn(f"I2C read failed: {e}")
         except Exception as e:
             self.get_logger().error(f"Unexpected error in encoder_callback: {e}")
+
+    # def encoder_callback(self):
+    #     try:
+    #         msg = JointState()
+
+    #         # Fill joint names
+    #         msg.name = self.joint_names
+    #         ang_L = read_angle_L()
+            
+    #         vel_L = (ang_L - self.ang_L_prev) / (time.time() - self.time_L_prev)
+    #         self.time_L_prev = time.time()
+    #         self.ang_L_prev = ang_L
+    #         ang_R = read_angle_R()
+            
+    #         vel_R = (ang_R - self.ang_R_prev) / (time.time() - self.time_R_prev)
+            
+    #         self.time_R_prev = time.time()
+    #         self.ang_R_prev = ang_R
+    #         msg.position = [ang_L,ang_R]
+    #         msg.velocity = [vel_L,vel_R]
+            
+    #         self.publisher_.publish(msg)
+          
+    #     except OSError as e:
+    #         self.get_logger().warn(f"I2C read failed: {e}")
+    #     except Exception as e:
+    #         self.get_logger().error(f"Unexpected error in encoder_callback: {e}")
 
 
 def main(args=None):
