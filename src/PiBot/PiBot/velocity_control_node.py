@@ -161,6 +161,13 @@ class VelocityController(Node):
     # -----------------------------------------------------
 
     def do_drive_motor(self):
+        # basically if both are 0, we should exit before processing PWM
+        if self.m1vel_target == self.m2vel_target == 0:
+            self.motor_1.forward(0)
+            self.motor_2.forward(0)
+            exit
+
+
         if self.m1vel_pwm >= 0:
             self.motor_1.forward(abs(self.m1vel_pwm))
         else:

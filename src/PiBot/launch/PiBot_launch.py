@@ -20,5 +20,10 @@ def generate_launch_description():
                 name="velocity_control",
                 # output='screen'
             ),
+            Node(
+                package="PiBot",
+                executable="wheel_odometry",
+                name="wheel_odometry"
+            )
         ]
     )

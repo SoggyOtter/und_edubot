@@ -55,6 +55,7 @@ class JointStatePublisher(Node):
         self.get_logger().info('Joint State Publisher Node has been started.')
         
     def angular_velocity_cb(self):
+        # Note, before publishing, should probably apply a low pass filter on the absolute rate
         try:
             msg = JointState()
             msg.name = self.joint_names
@@ -88,33 +89,6 @@ class JointStatePublisher(Node):
             self.get_logger().warn(f"I2C read failed: {e}")
         except Exception as e:
             self.get_logger().error(f"Unexpected error in encoder_callback: {e}")
-
-    # def encoder_callback(self):
-    #     try:
-    #         msg = JointState()
-
-    #         # Fill joint names
-    #         msg.name = self.joint_names
-    #         ang_L = read_angle_L()
-            
-    #         vel_L = (ang_L - self.ang_L_prev) / (time.time() - self.time_L_prev)
-    #         self.time_L_prev = time.time()
-    #         self.ang_L_prev = ang_L
-    #         ang_R = read_angle_R()
-            
-    #         vel_R = (ang_R - self.ang_R_prev) / (time.time() - self.time_R_prev)
-            
-    #         self.time_R_prev = time.time()
-    #         self.ang_R_prev = ang_R
-    #         msg.position = [ang_L,ang_R]
-    #         msg.velocity = [vel_L,vel_R]
-            
-    #         self.publisher_.publish(msg)
-          
-    #     except OSError as e:
-    #         self.get_logger().warn(f"I2C read failed: {e}")
-    #     except Exception as e:
-    #         self.get_logger().error(f"Unexpected error in encoder_callback: {e}")
 
 
 def main(args=None):

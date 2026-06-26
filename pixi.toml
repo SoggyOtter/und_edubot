@@ -36,7 +36,9 @@ env = {
 
 [feature.test.dependencies]
 ruff = "*"
-pyrefly = ">=1.0.0,<2"
+
+[feature.test.pypi-dependencies]
+pyrefly = ">=1.1.1, <2"
 
 [environments]
 zenoh = ["zenoh"]
