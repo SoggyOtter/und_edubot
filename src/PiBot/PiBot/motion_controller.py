@@ -34,7 +34,7 @@ class MotionController(Node):
         self.movement_server = self.create_service(
             Move, "/move", self.move_cb, callback_group=MutuallyExclusiveCallbackGroup()
         )
-        self.create_publisher(Twist, "/cmd_vel", 10)
+        self.cmd_vel_pub = self.create_publisher(Twist, "/cmd_vel", 10)
         self.pub_rate = self.create_rate(5)
 
         self.odom = None
@@ -68,6 +68,7 @@ class MotionController(Node):
             self.get_logger().info(
                 f"Not quite there yet, driving forward, Traveled {dist_traveled} out of {req.distance}"
             )
+            self.cmd_vel_pub.publish(twist)
             self.pub_rate.sleep()
 
         # Should calculate error from an expected ending distance
