@@ -34,7 +34,7 @@ class MotionController(Node):
         self.movement_server = self.create_service(
             Move, "/move", self.move_cb, callback_group=MutuallyExclusiveCallbackGroup()
         )
-        self.create_publisher(Twist, "/cmd_vel")
+        self.create_publisher(Twist, "/cmd_vel", 10)
         self.pub_rate = self.create_rate(5)
 
         self.odom = None
