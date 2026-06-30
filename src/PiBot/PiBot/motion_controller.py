@@ -57,10 +57,10 @@ class MotionController(Node):
         # Go forward
         self.get_logger().info("Driving forward")
         while (
-            dist_traveled := np.linalg.norm(
+            (dist_traveled := np.linalg.norm(
                 vector32Numpy(self.odom.pose.pose.position)
                 - vector32Numpy(starting_pose.position)
-            )
+            ))
             < req.distance
         ):
             twist = Twist()
