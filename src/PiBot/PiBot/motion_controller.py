@@ -51,11 +51,11 @@ class MotionController(Node):
         starting_pose = self.odom.pose.pose
 
         # Turn
-        self.get_logger("Turning")
+        self.get_logger().info("Turning")
         # Implement later
 
         # Go forward
-        self.get_logger("Driving forward")
+        self.get_logger().info("Driving forward")
         while (
             dist_traveled := np.linalg.norm(
                 vector32Numpy(self.odom.pose.pose.position)
