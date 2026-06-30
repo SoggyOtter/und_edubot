@@ -32,7 +32,7 @@ class MotionController(Node):
             callback_group=MutuallyExclusiveCallbackGroup(),
         )
         self.movement_server = self.create_service(
-            Move, "/move", self.move_cb, callback_group=MutuallyExclusiveCallbackGroup
+            Move, "/move", self.move_cb, callback_group=MutuallyExclusiveCallbackGroup()
         )
         self.create_publisher(Twist, "/cmd_vel")
         self.pub_rate = self.create_rate(5)
