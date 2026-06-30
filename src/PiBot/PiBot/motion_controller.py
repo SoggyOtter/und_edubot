@@ -14,7 +14,7 @@ def vector32Numpy(vector: Vector3) -> np.ndarray:
     # note that z doesn't actually matter when
     # A. we don't actually ever update z for positin
     # this is a ground robot, and there is no real way for it to intentionally manipulate its z position
-    return [vector.x, vector.y, vector.z]
+    return np.array([vector.x, vector.y, vector.z])
 
 
 class MotionController(Node):
