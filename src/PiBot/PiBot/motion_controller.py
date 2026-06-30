@@ -66,7 +66,7 @@ class MotionController(Node):
             twist = Twist()
             twist.linear.x = 1.0
             self.get_logger().info(
-                f"Not quite there yet, driving forward, Traveled {dist_traveled:%.2f} out of {req.distance:%.2f}"
+                f"Not quite there yet, driving forward, Traveled {dist_traveled} out of {req.distance}"
             )
             self.pub_rate.sleep()
 
