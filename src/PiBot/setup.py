@@ -26,7 +26,8 @@ setup(
             "motor_control = PiBot.motor_control:main",
             "encoder_data = PiBot.encoder_publisher:main",
             "velocity_control = PiBot.velocity_control_node:main",
-            "wheel_odometry = PiBot.wheel_odometry:main"
+            "wheel_odometry = PiBot.wheel_odometry:main",
+            "motion_controller = PiBot.motion_controller:main",
         ],
     },
 )

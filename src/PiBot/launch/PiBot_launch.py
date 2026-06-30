@@ -1,8 +1,8 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.substitutions import PathJoinSubstitution
-from launch_ros.substitutions import FindPackageShare
-from launch.actions import IncludeLaunchDescription
+# from launch.substitutions import PathJoinSubstitution
+# from launch_ros.substitutions import FindPackageShare
+# from launch.actions import IncludeLaunchDescription
 
 
 def generate_launch_description():
@@ -23,7 +23,12 @@ def generate_launch_description():
             Node(
                 package="PiBot",
                 executable="wheel_odometry",
-                name="wheel_odometry"
-            )
+                name="wheel_odometry",
+            ),
+            Node(
+                package="PiBot",
+                executable="motion_controller",
+                name="motion_controller",
+            ),
         ]
     )

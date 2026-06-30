@@ -1,0 +1,11 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/.pixi/envs/bin/python3",
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/.pixi/envs/default/lib/python3.11/site-packages",
+        "${workspaceFolder}/install/und_edubot_interfaces/python3.11/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/.pixi/envs/default/lib/python3.11/site-packages",
+        "${workspaceFolder}/install/und_edubot_interfaces/python3.11/site-packages"
+    ]
+}

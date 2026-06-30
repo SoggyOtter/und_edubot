@@ -27,8 +27,12 @@ class VelocityController(Node):
         )
 
         # Publishers
-        self.motor_1_err_pub = self.create_publisher(Float64, "motor_1/velocity_error", 10)
-        self.motor_2_err_pub = self.create_publisher(Float64, "motor_2/velocity_error", 10)
+        self.motor_1_err_pub = self.create_publisher(
+            Float64, "motor_1/velocity_error", 10
+        )
+        self.motor_2_err_pub = self.create_publisher(
+            Float64, "motor_2/velocity_error", 10
+        )
 
         # Motors
         self.motor_1 = Motor(25, 18)
@@ -56,8 +60,8 @@ class VelocityController(Node):
         self.last_pid_time = self.get_clock().now()
 
         # Smoothing
-        self.max_pwm_rate = 2.0     # PWM units per second
-        self.d_alpha = 0.2          # derivative low-pass
+        self.max_pwm_rate = 2.0  # PWM units per second
+        self.d_alpha = 0.2  # derivative low-pass
         self.deadband = 0.03
 
         self.declare_params()
@@ -81,7 +85,7 @@ class VelocityController(Node):
     def set_motor_speed(self, msg: Twist):
         self.m1vel_target = msg.linear.x
         self.m2vel_target = msg.linear.x
-        
+
         if msg.angular.z != 0:
             self.m1vel_target = -msg.angular.z
             self.m2vel_target = msg.angular.z
@@ -166,7 +170,6 @@ class VelocityController(Node):
             self.motor_1.forward(0)
             self.motor_2.forward(0)
             exit
-
 
         if self.m1vel_pwm >= 0:
             self.motor_1.forward(abs(self.m1vel_pwm))

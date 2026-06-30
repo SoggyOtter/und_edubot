@@ -38,22 +38,19 @@ class JointStatePublisher(Node):
         self.publisher_ = self.create_publisher(JointState, "joint_states", 10)
         timer_period = 0.05  # seconds
         self.timer = self.create_timer(timer_period, self.angular_velocity_cb)
-        self.joint_names = ['left', 'right']
+        self.joint_names = ["left", "right"]
         self.ang_L_ring = deque(maxlen=3)
         self.ang_R_ring = deque(maxlen=3)
-        
+
         self.ang_R_prev = read_angle_R()
         self.time_R_prev = time.time()
         self.ang_L_prev = read_angle_L()
         self.time_L_prev = time.time()
-        
-        
-        
+
         self.prev_time = time.time()
-        
-        
-        self.get_logger().info('Joint State Publisher Node has been started.')
-        
+
+        self.get_logger().info("Joint State Publisher Node has been started.")
+
     def angular_velocity_cb(self):
         # Note, before publishing, should probably apply a low pass filter on the absolute rate
         try:
@@ -63,28 +60,27 @@ class JointStatePublisher(Node):
             # Calculate difference in degrees
             # do -1 to get robot frame
             now = time.time()
-            angular_diff_deg_L = (ang_L - self.ang_L_prev + 180.0) % 360. -180
+            angular_diff_deg_L = (ang_L - self.ang_L_prev + 180.0) % 360.0 - 180
             angular_vel_deg_L = angular_diff_deg_L / (now - self.time_L_prev)
-            
+
             ang_R = read_angle_R()
-            angular_diff_deg_R = -1* (ang_R - self.ang_R_prev + 180.0) % 360. -180
+            angular_diff_deg_R = -1 * (ang_R - self.ang_R_prev + 180.0) % 360.0 - 180
             angular_vel_deg_R = angular_diff_deg_R / (now - self.time_R_prev)
-            
-            
+
             self.ang_R_ring.append(angular_vel_deg_R)
             self.ang_L_ring.append(angular_vel_deg_L)
-            
+
             # Update values for calculating velocity and time
             self.ang_L_prev = ang_L
             self.ang_R_prev = ang_R
             # should just use same time, should specify high precision clock for better results
             self.time_L_prev = now
             self.time_R_prev = now
-            
+
             msg.position = [ang_L, ang_R]
             msg.velocity = [angular_vel_deg_L, angular_vel_deg_R]
             self.publisher_.publish(msg)
-        
+
         except OSError as e:
             self.get_logger().warn(f"I2C read failed: {e}")
         except Exception as e:

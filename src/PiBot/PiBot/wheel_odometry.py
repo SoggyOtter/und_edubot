@@ -23,8 +23,8 @@ class WheelOdometry(Node):
     def __init__(self):
         super().__init__("wheel_odometry")
 
-        self.wheel_radius = 0.04     # meters
-        self.wheel_base = 0.138        # distance between wheels, meters
+        self.wheel_radius = 0.04  # meters
+        self.wheel_base = 0.138  # distance between wheels, meters
 
         self.left_joint_name = "left"
         self.right_joint_name = "right"
@@ -66,8 +66,8 @@ class WheelOdometry(Node):
             return
 
         # get velocity in rad/s, since I publish degrees
-        left_wheel_rad_s = msg.velocity[left_idx] * (math.pi / 180.) 
-        right_wheel_rad_s = msg.velocity[right_idx] * (math.pi / 180.)
+        left_wheel_rad_s = msg.velocity[left_idx] * (math.pi / 180.0)
+        right_wheel_rad_s = msg.velocity[right_idx] * (math.pi / 180.0)
 
         v_left = left_wheel_rad_s * self.wheel_radius
         v_right = right_wheel_rad_s * self.wheel_radius

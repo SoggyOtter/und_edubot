@@ -22,20 +22,26 @@ import queue
 class ScanSaver(Node):
     def __init__(self):
         super().__init__("scan_saver")
-        self.save_scan_server = self.create_service(Trigger, "save_scan", self.save_scan)
-        self._set_last_scan_sub = self.create_subscription(LaserScan, "scan", callback=self.set_last_scan, qos_profile=qos_profile_sensor_data)
-        
+        self.save_scan_server = self.create_service(
+            Trigger, "save_scan", self.save_scan
+        )
+        self._set_last_scan_sub = self.create_subscription(
+            LaserScan,
+            "scan",
+            callback=self.set_last_scan,
+            qos_profile=qos_profile_sensor_data,
+        )
+
         # implementing a service for this is technically cleaner
         self.declare_parameter("output_directory", value="output")
         self.declare_parameter("format", value="csv")
-        self.declare_parameter("num_scans", value=1 )
-        self.num_scans = self.get_parameter('num_scans').value
-        self.format = self.get_parameter('format').value
+        self.declare_parameter("num_scans", value=1)
+        self.num_scans = self.get_parameter("num_scans").value
+        self.format = self.get_parameter("format").value
         # self.get_logger().info(f"constructing a queue of {self.num_scans}")
         # self._last_scan: queue.Queue[LaserScan] = queue.Queue(self.num_scans)
         self._last_scan: t.Optional[LaserScan] = None
 
-        
     @property
     def output_dir(self) -> t.Tuple[Path, int]:
         out_dir = Path(self.get_parameter("output_directory").value)
@@ -46,7 +52,7 @@ class ScanSaver(Node):
 
         if not out_dir.exists():
             out_dir.mkdir(parents=True)
-            
+
         self.get_logger().info(f"output dir is {out_dir}")
 
         scan_count = len(list(out_dir.glob(f"laser_scan_[0-9]*.{self.format}")))
@@ -73,14 +79,14 @@ class ScanSaver(Node):
 
         # this will handle some more complex bs
         # should update
-        out_dir, scan_count = self.output_dir 
-        filename = out_dir/ f"laser_scan_{scan_count}.{self.format}"
+        out_dir, scan_count = self.output_dir
+        filename = out_dir / f"laser_scan_{scan_count}.{self.format}"
 
         if self.format == "csv":
             self._save_csv(filename)
         else:
             write_to_npz(self._last_scan, filename)
-        
+
         # write_to_csv(self._last_scan, filename)
         # self.get_logger().info(f"Saved scan of length {self._last_scan.qsize()} to {filename}")
         self.get_logger().info(f"Saved scan to {filename}")
@@ -90,14 +96,14 @@ class ScanSaver(Node):
 
     def set_last_scan(self, msg: LaserScan):
         self._last_scan = msg
-    
+
     def _save_csv(self, filename):
         # Saving only the last scan is supported for csv right now
         scan = self._last_scan
         write_to_csv(scan, filename)
-        
-        
-def main(args = None):
+
+
+def main(args=None):
     rclpy.init(args=args)
 
     scan_saver = ScanSaver()
