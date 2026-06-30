@@ -169,7 +169,7 @@ class VelocityController(Node):
         if self.m1vel_target == self.m2vel_target == 0:
             self.motor_1.forward(0)
             self.motor_2.forward(0)
-            exit
+            return
 
         if self.m1vel_pwm >= 0:
             self.motor_1.forward(abs(self.m1vel_pwm))
