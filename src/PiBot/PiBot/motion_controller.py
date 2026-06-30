@@ -71,6 +71,9 @@ class MotionController(Node):
             self.cmd_vel_pub.publish(twist)
             self.pub_rate.sleep()
 
+        # stop motors
+        self.cmd_vel_pub.publish(Twist())
+
         # Should calculate error from an expected ending distance
 
         return res
