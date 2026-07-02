@@ -28,6 +28,7 @@ setup(
             "velocity_control = PiBot.velocity_control_node:main",
             "wheel_odometry = PiBot.wheel_odometry:main",
             "motion_controller = PiBot.motion_controller:main",
+            "movement_recorder = PiBot.movement_recorder:main",
         ],
     },
 )

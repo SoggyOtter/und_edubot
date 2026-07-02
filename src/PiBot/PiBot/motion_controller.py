@@ -1,7 +1,6 @@
-import math
 import rclpy
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.callback_groups import MutuallyExclusiveCallbackGroup, ReentrantCallbackGroup
+from rclpy.callback_groups import MutuallyExclusiveCallbackGroup
 from rclpy.node import Node
 from nav_msgs.msg import Odometry
 from und_edubot_interfaces.srv import Move
@@ -10,11 +9,8 @@ from geometry_msgs.msg import Twist, Vector3
 import numpy as np
 
 
-def vector32Numpy(vector: Vector3) -> np.ndarray:
-    # note that z doesn't actually matter when
-    # A. we don't actually ever update z for positin
-    # this is a ground robot, and there is no real way for it to intentionally manipulate its z position
-    return np.array([vector.x, vector.y, vector.z])
+def position_to_numpy(position) -> np.ndarray:
+    return np.array([position.x, position.y, position.z])
 
 
 class MotionController(Node):
@@ -47,8 +43,11 @@ class MotionController(Node):
     def move_cb(self, req: Move.Request, res: Move.Response) -> Move.Response:
         self.get_logger().info("Movement requested")
 
-        # For now, assume that this is a copy
-        starting_pose = self.odom.pose.pose
+        while self.odom is None:
+            self.get_logger().info("Waiting for odometry before moving")
+            self.pub_rate.sleep()
+
+        starting_position = position_to_numpy(self.odom.pose.pose.position)
 
         # Turn
         self.get_logger().info("Turning")
@@ -57,12 +56,10 @@ class MotionController(Node):
         # Go forward
         self.get_logger().info("Driving forward")
         while (
-            (dist_traveled := np.linalg.norm(
-                vector32Numpy(self.odom.pose.pose.position)
-                - vector32Numpy(starting_pose.position)
-            ))
-            < req.distance
-        ):
+            dist_traveled := np.linalg.norm(
+                position_to_numpy(self.odom.pose.pose.position) - starting_position
+            )
+        ) < req.distance:
             twist = Twist()
             twist.linear.x = 1.0
             self.get_logger().info(
@@ -74,7 +71,8 @@ class MotionController(Node):
         # stop motors
         self.cmd_vel_pub.publish(Twist())
 
-        # Should calculate error from an expected ending distance
+        delta = position_to_numpy(self.odom.pose.pose.position) - starting_position
+        res.delta_xy = Vector3(x=float(delta[0]), y=float(delta[1]), z=0.0)
 
         return res
 

@@ -3,5 +3,4 @@ float32 distance
 float32 angle_d
 ---
 # RESPONSE
-float32 leftwheel_d 
-float32 rightwheel_d
+geometry_msgs/Vector3 delta_xy
