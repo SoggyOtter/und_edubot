@@ -31,10 +31,9 @@ numpy = ">=1.26.4,<2"
 compilers = ">=1.11.0,<2"
 python = ">=3.11.15,<3.12"
 
-[feature.zenoh.activation]
-env = {
-    RMW_IMPLEMENTATION="rmw_zenoh_cpp",
-    ZENOH_ROUTER_CONFIG_URI="$PIXI_PROJECT_ROOT/router.json5"}
+[feature.zenoh.activatio.env]
+RMW_IMPLEMENTATION="rmw_zenoh_cpp"
+ZENOH_ROUTER_CONFIG_URI="$PIXI_PROJECT_ROOT/router.json5"
 
 [feature.test.dependencies]
 ruff = "*"
