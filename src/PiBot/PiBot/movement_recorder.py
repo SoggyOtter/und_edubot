@@ -11,7 +11,7 @@ from und_edubot_interfaces.srv import Move
 
 
 class MovementRecorder(Node):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("movement_recorder")
         self.client = self.create_client(Move, "/move")
 
@@ -38,7 +38,7 @@ class MovementRecorder(Node):
         return response
 
 
-def parse_args(argv):
+def parse_args(args) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Call /move and write the returned delta_xy to a CSV file."
     )
@@ -61,10 +61,12 @@ def parse_args(argv):
         default=30.0,
         help="Seconds to wait for the service and response",
     )
-    return parser.parse_args(remove_ros_args(args=argv)[1:])
+    return parser.parse_args(remove_ros_args(args=args)[1:])
 
 
-def write_result(path: Path, distance: float, angle_d: float, response: Move.Response):
+def write_result(
+    path: Path, distance: float, angle_d: float, response: Move.Response
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     write_header = not path.exists() or path.stat().st_size == 0
 
@@ -92,7 +94,7 @@ def write_result(path: Path, distance: float, angle_d: float, response: Move.Res
         )
 
 
-def main(args=None):
+def main(args=None) -> None:
     parsed_args = parse_args(args)
 
     rclpy.init(args=args)

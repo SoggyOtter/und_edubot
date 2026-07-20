@@ -9,12 +9,12 @@ from geometry_msgs.msg import Twist, Vector3
 import numpy as np
 
 
-def position_to_numpy(position) -> np.ndarray:
-    return np.array([position.x, position.y, position.z])
+def position_to_numpy(position):
+    return np.array([position.x, position.y, position.z], dtype=float)
 
 
 class MotionController(Node):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__("motion_controller")
 
         self.declare_parameter("wheel_radius", 0.04)
@@ -33,11 +33,11 @@ class MotionController(Node):
         self.cmd_vel_pub = self.create_publisher(Twist, "/cmd_vel", 10)
         self.pub_rate = self.create_rate(5)
 
-        self.odom = None
+        self.odom: Odometry | None = None
 
         self.get_logger().info("Motion Controller created")
 
-    def odometry_cb(self, msg: Odometry):
+    def odometry_cb(self, msg: Odometry) -> None:
         self.odom = msg
 
     def move_cb(self, req: Move.Request, res: Move.Response) -> Move.Response:
@@ -47,6 +47,7 @@ class MotionController(Node):
             self.get_logger().info("Waiting for odometry before moving")
             self.pub_rate.sleep()
 
+        assert self.odom is not None
         starting_position = position_to_numpy(self.odom.pose.pose.position)
 
         # Turn
@@ -77,7 +78,7 @@ class MotionController(Node):
         return res
 
 
-def main(args=None):
+def main(args=None) -> None:
     rclpy.init(args=args)
 
     motion_controller = MotionController()

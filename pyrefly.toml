@@ -1,0 +1,11 @@
+preset = "basic"
+
+project-includes = [
+    "src/**/*.py",
+]
+
+ignore-missing-imports = [
+    "RPi.GPIO",
+    "gpiod",
+    "smbus2",
+]

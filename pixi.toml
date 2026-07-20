@@ -49,6 +49,7 @@ test = ["test"]
 [activation]
 scripts = ["./activate.sh"]
 
+# Should probably add this to linux-aarch64 target
 [system-requirements]
 libc = "2.34"
 
