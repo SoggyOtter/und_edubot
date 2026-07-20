@@ -22,8 +22,6 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "PiBot = PiBot.PiBot:main",
-            "motor_control = PiBot.motor_control:main",
             "encoder_data = PiBot.encoder_publisher:main",
             "velocity_control = PiBot.velocity_control_node:main",
             "wheel_odometry = PiBot.wheel_odometry:main",
