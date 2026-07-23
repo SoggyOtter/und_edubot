@@ -56,6 +56,7 @@ class WheelOdometry(Node):
         self.last_time = now
 
         if dt <= 0.0:
+            self.get_logger().error("Time Delta is either zero or negative")
             return
 
         try:
@@ -77,10 +78,13 @@ class WheelOdometry(Node):
 
         delta_theta = angular_velocity * dt
 
+        # Update position and orientation
+        # Use average heading during time interval to get more accurate end position
         self.x += linear_velocity * math.cos(self.theta + delta_theta / 2.0) * dt
         self.y += linear_velocity * math.sin(self.theta + delta_theta / 2.0) * dt
         self.theta += delta_theta
 
+        # Normalize theta to be between -pi and pi
         self.theta = math.atan2(math.sin(self.theta), math.cos(self.theta))
 
         self.publish_odom(now, linear_velocity, angular_velocity)

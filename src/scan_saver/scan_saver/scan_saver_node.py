@@ -8,7 +8,7 @@ from rclpy.qos import qos_profile_sensor_data
 
 import typing as t
 
-from .utils import write_to_csv, write_to_npz
+from .utils import write_to_csv
 import numpy as np
 
 from pathlib import Path
