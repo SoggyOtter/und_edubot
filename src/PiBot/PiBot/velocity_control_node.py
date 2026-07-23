@@ -72,7 +72,7 @@ class VelocityController(Node):
     # -----------------------------------------------------
 
     def declare_params(self):
-        self.declare_parameter("motor1.kp", 0.40)
+        self.declare_parameter("motor1.kp", 0.39)
         self.declare_parameter("motor1.ki", 0.15)
         self.declare_parameter("motor1.kd", 0.005)
 
