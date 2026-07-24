@@ -54,6 +54,12 @@ def generate_launch_description():
                 executable="motion_controller",
                 name="motion_controller",
             )
+    
+    tf_publisher = Node(
+        package="PiBot",
+        executable="static_tf_publisher",
+        name="static_tf_publisher",
+    )
 
     # TODO(Alex), break apart to base launch description, then create other launch files to launch specific modules
     return LaunchDescription(
@@ -63,6 +69,7 @@ def generate_launch_description():
             wheel_odometry_node,
             motion_control_node,
             launch_foxglove_bridge_arg,
-            foxglove_bridge
+            foxglove_bridge,
+            tf_publisher
         ]
     )

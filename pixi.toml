@@ -31,7 +31,7 @@ numpy = ">=1.26.4,<2"
 compilers = ">=1.11.0,<2"
 python = ">=3.11.15,<3.12"
 
-[feature.zenoh.activatio.env]
+[feature.zenoh.activation.env]
 RMW_IMPLEMENTATION="rmw_zenoh_cpp"
 ZENOH_ROUTER_CONFIG_URI="$PIXI_PROJECT_ROOT/router.json5"
 
@@ -55,3 +55,7 @@ libc = "2.34"
 [target.linux-aarch64.dependencies]
 lgpio = ">=0.2.2.0,<0.3"
 smbus2 = ">=0.4.3,<0.5"
+
+[target.linux-aarch64.tasks]
+lidar = "ros2 launch sllidar_ros2 sllidar_a1_launch.py"
+variance_node = "ros2 run scan_saver variance_node"

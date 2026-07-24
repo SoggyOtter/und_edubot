@@ -27,6 +27,7 @@ setup(
             "wheel_odometry = PiBot.wheel_odometry:main",
             "motion_controller = PiBot.motion_controller:main",
             "movement_recorder = PiBot.movement_recorder:main",
+            "static_tf_publisher = PiBot.static_tf_publisher:main",
         ],
     },
 )

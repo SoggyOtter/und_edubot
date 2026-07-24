@@ -22,6 +22,9 @@ setup(
         ],
     },
     entry_points={
-        "console_scripts": ["scan_saver = scan_saver.scan_saver_node:main"],
+        "console_scripts": [
+            "scan_saver = scan_saver.scan_saver_node:main",
+            "variance_node = scan_saver.variance_node:main"    
+        ],
     },
 )
