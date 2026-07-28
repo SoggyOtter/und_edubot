@@ -76,7 +76,7 @@ class VelocityController(Node):
         self.declare_parameter("motor1.ki", 0.0)
         self.declare_parameter("motor1.kd", 0.005)
 
-        self.declare_parameter("motor2.kp", 0.36)
+        self.declare_parameter("motor2.kp", 0.35)
         self.declare_parameter("motor2.ki", 0.0)
         self.declare_parameter("motor2.kd", 0.005)
 

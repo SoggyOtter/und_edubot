@@ -3,41 +3,54 @@ import numpy as np
 
 import typing as t
 
+def calculate_rho_variance(rho: float) -> float:
+    # calculated from data
+    scale = 0.0000025924
+    bias = -0.0000019585
+
+    # to account for low variance at close range
+    return max(0., scale * rho + bias)
+
+
 # need to actually calculate rho_variance
 def calculate_covariance_matrix(pts: np.ndarray, rho_variance = 1.0):
     # convert back to polar form
     theta, rho = np.vsplit(cartesian_to_polar(pts[:,0], pts[:,1]), 2)
 
-    weights = 1/rho_variance * np.ones_like(theta)
+    vetorized_variance = np.vectorize(calculate_rho_variance)
+    rho_variance: np.ndarray = vetorized_variance(rho)
+    weights = np.power(rho_variance, -1)
 
+    W = np.sum(weights)
+
+ 
     # Start by calculating numerator of (1) 
     n1 = 0.
     for i in range(len(theta)):
         for j in range(i+1,len(theta)):
             n1 += weights[i] * weights[j] * rho[i] * rho[j] * np.sin(theta[i] + theta[j])
             # add second term for numerator
-            np.sum(weights ** -1)
 
     n2 = 0.
     for i in range(len(theta)):
         wi = weights[i]
-        n2 += (wi - np.sum(weights)) * wi * rho[i] ** 2 * np.sin(2 * theta[i])
+        n2 += (wi - W) * wi * rho[i] ** 2 * np.sin(2 * theta[i])
         # add second term for numerator
     # technically, need to scale by 2/np.sum(weights) ... 
-    N = 2/np.sum(weights) * (n1 + n2)
+    N = 2/W * (n1 + n2)
 
     # calculate denominator of (1)
     d1 = 0.
     for i in range(len(theta)):
         for j in range(i+1,len(theta)):
-            d1 += w * rho[i] * rho[j] * np.cos(theta[i] + theta[j])
+            d1 += weights[i] * weights[j] * rho[i] * rho[j] * np.cos(theta[i] + theta[j])
     
     d2 = 0.
     for i in range(len(theta)):
         wi = weights[i]
-        d2 += (wi - np.sum(weights)) * wi * rho[i] ** 2 * np.cos(2 * theta[i])
+        d2 += (wi - W) * wi * rho[i] ** 2 * np.cos(2 * theta[i])
 
-    D = np.sum(weights) * (d1 + d2)
+    D = 2/W * (d1 + d2)
 
     # N / D = tan(2*alpha)
     # verify that this is correct 
@@ -46,17 +59,17 @@ def calculate_covariance_matrix(pts: np.ndarray, rho_variance = 1.0):
     r = 0.
     for i in range(len(theta)):
         wi = weights[i]
-        r += wi*rho[i]*cos(theta[i] - alpha)
-    r = r / np.sum(weights)
+        r += wi*rho[i]*np.cos(theta[i] - alpha)
+    r = r / W
 
     xbar_w = 0.
     ybar_w = 0.
     for i in range(len(theta)):
-        xbar_w += weigts[i]* rho[i] * np.cos(theta[i])
-        ybar_w += weigts[i]* rho[i] * np.sin(theta[i])
+        xbar_w += weights[i]* rho[i] * np.cos(theta[i])
+        ybar_w += weights[i]* rho[i] * np.sin(theta[i])
     
-    xbar_w = xbar_w / np.sum(weigts)
-    ybar_w = ybar_w / np.sum(weigts)
+    xbar_w = xbar_w / W
+    ybar_w = ybar_w / W
 
     # calculate (9)
     sigma_a2_scale =((D ** 2 + N ** 2)**2) **-1
@@ -65,7 +78,7 @@ def calculate_covariance_matrix(pts: np.ndarray, rho_variance = 1.0):
     for i in range(len(theta)):
         wi = weights[i]
         # technically these can be pre-calculate from jacobian 
-        sigma_a2 += (wi**2) * (xbar_w * np.cos(theta[i]) - ybar_w * np.sin(theta[i]) - rho[i] * np.cos(2 * theta[i])) - D * (xbar_w * np.sin(theta[i]) + ybar_w * np.cos(theta[i]) - rho[i]*np.sin(2 * theta[i]))**2 # * sigma^2 _ rho[i]
+        sigma_a2 += (wi**2) * (xbar_w * np.cos(theta[i]) - ybar_w * np.sin(theta[i]) - rho[i] * np.cos(2 * theta[i])) - D * (xbar_w * np.sin(theta[i]) + ybar_w * np.cos(theta[i]) - rho[i]*np.sin(2 * theta[i]))**2 * rho_variance[i]
     
     sigma_a2 = sigma_a2 * sigma_a2_scale
 
@@ -88,11 +101,11 @@ def calculate_covariance_matrix(pts: np.ndarray, rho_variance = 1.0):
     np.cos(theta - alpha) + delta_a_wrt_delta_P * delta_r_constant_term
 
     for i in range(len(theta)):
-        sigma_r2 += (weights[i] / np.sum(weights)) * (np.cos(theta[i] - alpha) + delta_a_wrt_delta_P[i] * delta_r_constant_term )** 2 # * variance rho_i 
+        sigma_r2 += (weights[i] / np.sum(weights)) * (np.cos(theta[i] - alpha) + delta_a_wrt_delta_P[i] * delta_r_constant_term )** 2 * rho_variance[i]
     
 
     # calculate (11)
-    sigma_ar = np.sum(delta_r_wrt_delta_p * delta_a_wrt_delta_P) # variance of r_i
+    sigma_ar = np.sum(delta_r_wrt_delta_p * delta_a_wrt_delta_P * rho_variance)
 
 
     return np.array([

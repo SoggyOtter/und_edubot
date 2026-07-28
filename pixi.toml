@@ -13,7 +13,6 @@ zenohd = { cmd = "ros2 run rmw_zenoh_cpp rmw_zenohd", default-environment = "zen
 clean = "rm -rf build install log"
 pibot = "ros2 run PiBot motor_control"
 teleop = "ros2 run teleop_twist_keyboard teleop_twist_keyboard"
-velocity_controller = "ros2 launch PiBot PiBot_launch.py"
 
 
 [dependencies]
@@ -59,3 +58,5 @@ smbus2 = ">=0.4.3,<0.5"
 [target.linux-aarch64.tasks]
 lidar = "ros2 launch sllidar_ros2 sllidar_a1_launch.py"
 variance_node = "ros2 run scan_saver variance_node"
+velocity_controller = "ros2 launch PiBot PiBot_launch.py"
+movement_recorder = "ros2 run PiBot movement_recorder"
